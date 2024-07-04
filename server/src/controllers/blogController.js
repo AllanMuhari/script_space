@@ -71,3 +71,17 @@ export const likeBlog = async (req, res) => {
     res.status(400).json({ error: "Failed to like blog" });
   }
 };
+
+export const getBlogById = async (req, res) => {
+  const { blogId } = req.params;
+
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: { blogId },
+      include: {},
+    });
+    res.json(blog);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to fetch blog" });
+  }
+};

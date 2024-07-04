@@ -36,7 +36,6 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    // Ensure JWT_SECRET is properly loaded from environment variable
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
       console.error("JWT_SECRET not found in environment variables");
