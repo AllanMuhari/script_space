@@ -6,11 +6,13 @@ import userRoutes from "./routes/userRoutes.js";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3000;
 
