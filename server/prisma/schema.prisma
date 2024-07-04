@@ -12,3 +12,44 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  blogs     Blog[]   // One-to-many relation to blogs authored by the user
+  likedBlogs LikedBlog[] // Many-to-many relation to liked blogs
+  imageUrl  String?
+
+  @@map("user_table")
+}
+
+model Blog {
+  blogId      String     @id @default(uuid())
+  title       String
+  content     String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  published   Boolean    @default(false)
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id])
+  likedByCount Int        @default(0) // Number of users who liked the blog
+  likedBy     LikedBlog[] // Many-to-many relation to users who liked the blog
+
+  @@map("blog_table")
+}
+
+model LikedBlog {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  blog      Blog     @relation(fields: [blogId], references: [blogId])
+  blogId    String
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, blogId])
+  @@map("liked_blog")
+}
