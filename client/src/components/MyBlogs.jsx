@@ -41,37 +41,76 @@ const MyBlogs = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+        <div className="text-center">
+          <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 mb-4"></div>
+          <h2 className="text-2xl font-semibold">Loading...</h2>
+          <p className="text-gray-400">
+            Please wait while we fetch your blogs.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold">Error</h2>
+          <p className="text-red-500">{error}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
-    return <div>You need to be logged in to view your blogs.</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold">Access Denied</h2>
+          <p className="text-gray-400">
+            You need to be logged in to view your blogs.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="my-blogs">
-      <h2 className="text-2xl font-semibold mb-4">My Blogs</h2>
-      <ul>
+    <div className="my-blogs max-w-4xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg text-white">
+      <h2 className="text-3xl font-bold mb-6">My Blogs</h2>
+      <ul className="space-y-4">
         {myBlogs.length > 0 ? (
           myBlogs.map((blog) => (
             <li
               key={blog.id}
-              className="mb-4 p-4 border rounded bg-gray-100 text-black">
-              <h3 className="text-xl font-bold">{blog.title}</h3>
-              <p>{blog.content.slice(0, 100)}...</p>
-              <Link
-                to={`/blogs/${blog.id}`}
-                className="text-blue-500 hover:underline">
-                Read more
+              className="p-6 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition duration-200">
+              <Link to={`/blogs/${blog.id}`}>
+                <h3 className="text-2xl font-bold mb-2">{blog.title}</h3>
+                <p className="text-gray-400 mb-4">
+                  {blog.content.slice(0, 100)}...
+                </p>
               </Link>
+
+              <div className="flex justify-between items-center">
+                <Link
+                  to={`/edit-blog/${blog.id}`}
+                  className="text-blue-400 font-semibold hover:underline">
+                  Edit
+                </Link>
+
+                <Link
+                  to={`/blogs/${blog.id}`}
+                  className="text-blue-400 font-semibold hover:underline">
+                  Read More
+                </Link>
+              </div>
             </li>
           ))
         ) : (
-          <p>No blogs found. Start writing one!</p>
+          <p className="text-gray-400">No blogs found. Start writing one!</p>
         )}
       </ul>
     </div>
