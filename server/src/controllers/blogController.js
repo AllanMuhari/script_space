@@ -85,3 +85,17 @@ export const getBlogById = async (req, res) => {
     res.status(400).json({ error: "Failed to fetch blog" });
   }
 };
+export const getMyBlogs = async (req, res) => {
+  const { userId } = req.user;
+
+  try {
+    const blogs = await prisma.blog.findMany({
+      where: { authorId: userId },
+      include: { author: true },
+    });
+
+    res.json(blogs);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to fetch my blogs" });
+  }
+};
