@@ -79,33 +79,36 @@ const MyBlogs = () => {
   }
 
   return (
-    <div className="my-blogs max-w-4xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg text-white">
-      <h2 className="text-3xl font-bold mb-6">My Blogs</h2>
-      <ul className="space-y-4">
+    <div className="my-blogs max-w-6xl mx-auto p-8 bg-gray-900 rounded-lg shadow-lg text-white">
+      <h2 className="text-4xl font-bold mb-8">My Blogs</h2>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {myBlogs.length > 0 ? (
           myBlogs.map((blog) => (
             <li
-              key={blog.id}
+              key={blog.blogId}
               className="p-6 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition duration-200">
-              <Link to={`/blogs/${blog.id}`}>
+              <Link to={`/blogs/${blog.blogId}`}>
                 <h3 className="text-2xl font-bold mb-2">{blog.title}</h3>
                 <p className="text-gray-400 mb-4">
                   {blog.content.slice(0, 100)}...
                 </p>
               </Link>
-
-              <div className="flex justify-between items-center">
-                <Link
-                  to={`/edit-blog/${blog.id}`}
-                  className="text-blue-400 font-semibold hover:underline">
-                  Edit
-                </Link>
-
-                <Link
-                  to={`/blogs/${blog.id}`}
-                  className="text-blue-400 font-semibold hover:underline">
-                  Read More
-                </Link>
+              <div className="flex justify-between items-center mt-4">
+                <span className="text-sm text-gray-400">
+                  By: {blog.author.name}
+                </span>
+                <div className="flex space-x-4">
+                  <Link
+                    to={`/edit-blog/${blog.blogId}`}
+                    className="text-blue-400 font-semibold hover:underline">
+                    Edit
+                  </Link>
+                  <Link
+                    to={`/blogs/${blog.blogId}`}
+                    className="text-blue-400 font-semibold hover:underline">
+                    Read More
+                  </Link>
+                </div>
               </div>
             </li>
           ))

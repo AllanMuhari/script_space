@@ -99,3 +99,25 @@ export const getMyBlogs = async (req, res) => {
     res.status(400).json({ error: "Failed to fetch my blogs" });
   }
 };
+export const deleteMyBlog = async (req, res) => {
+  const { userId } = req.user;
+  const { blogId } = req.params;
+
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: { blogId },
+    });
+
+    if (blog.authorId !== userId) {
+      return res.status(403).json({ error: "You are not authorized to delete this blog" });
+    }
+
+    await prisma.blog.delete({
+      where: { blogId },
+    });
+
+    res.json({ message: "Blog deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ error: "Failed to delete blog" });
+  }
+};
