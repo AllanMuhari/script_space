@@ -43,7 +43,6 @@
 // };
 
 // export default HighlightedBlogs;
-// src/components/HighlightedBlogs.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -51,7 +50,7 @@ const HighlightedBlogs = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    // Using mock data for the example
+
     const mockBlogs = [
       {
         blogId: 1,
