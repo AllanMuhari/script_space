@@ -91,7 +91,7 @@ function Navbar() {
         </button>
       </div>
       {isMenuOpen && (
-        <ul className="md:hidden flex flex-col space-y-2 mt-4  text-center">
+        <ul className="md:hidden flex flex-col space-y-2 mt-4  qqtext-center">
           <li>
             <Link
               to="/"
