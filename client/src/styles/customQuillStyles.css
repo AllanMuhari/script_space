@@ -1,0 +1,27 @@
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+  background-color: #374151; 
+}
+
+.ql-editor {
+  border: none !important;
+  background-color: #1f2937; 
+  color: white; 
+  
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: white; 
+}
+
+.ql-toolbar .ql-fill {
+  fill: white; 
+}
+
+.ql-toolbar .ql-picker {
+  color: white; 
+}

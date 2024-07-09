@@ -2,6 +2,67 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "../styles/customQuillStyles.css";
+
+const modules = {
+  toolbar: [
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+      { align: [] },
+    ],
+    [
+      {
+        color: [
+          "#000000",
+          "#e60000",
+          "#ff9900",
+          "#ffff00",
+          "#008a00",
+          "#0066cc",
+          "#9933ff",
+          "#ffffff",
+          "#facccc",
+          "#ffebcc",
+          "#ffffcc",
+          "#cce8cc",
+          "#cce0f5",
+          "#ebd6ff",
+          "#bbbbbb",
+          "#f06666",
+          "#ffc266",
+          "#ffff66",
+          "#66b966",
+          "#66a3e0",
+          "#c285ff",
+          "#888888",
+          "#a10000",
+          "#b26b00",
+          "#b2b200",
+          "#006100",
+          "#0047b2",
+          "#6b24b2",
+          "#444444",
+          "#5c0000",
+          "#663d00",
+          "#666600",
+          "#003700",
+          "#002966",
+          "#3d1466",
+          "custom-color",
+        ],
+      },
+    ],
+  ],
+};
 
 function CreateBlog() {
   const [title, setTitle] = useState("");
@@ -42,9 +103,9 @@ function CreateBlog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto my-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold mb-4">Write Your Blog</h1>
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="container mx-auto my-10 p-6 bg-gray-800 rounded-lg shadow-lg max-w-4xl">
+        <h1 className="text-4xl font-bold mb-4 text-center">Write Your Blog</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
@@ -58,7 +119,7 @@ function CreateBlog() {
               id="blogTitle"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-gray-700 text-white block w-full p-2.5 rounded border border-gray-600"
+              className="bg-gray-700 text-white block w-full p-2.5 rounded border border-gray-600 focus:ring focus:ring-blue-500"
               placeholder="Enter your blog title here"
               required
             />
@@ -70,15 +131,18 @@ function CreateBlog() {
               className="block mb-2 text-sm font-medium text-gray-400">
               Blog Content
             </label>
-            <textarea
-              id="blogContent"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="bg-gray-700 text-white block w-full h-96 p-2.5 rounded border border-gray-600"
-              placeholder="Write your blog content here"
-              required></textarea>
+            <div className="rounded">
+              <ReactQuill
+                value={content}
+                onChange={setContent}
+                className="h-96"
+                placeholder="Write your blog content here"
+                theme="snow"
+                modules={modules}
+              />
+            </div>
           </div>
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-end mt-14 space-x-4">
             <button
               type="button"
               className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
@@ -100,3 +164,4 @@ function CreateBlog() {
 }
 
 export default CreateBlog;
+
