@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ const MyBlogs = () => {
   const [myBlogs, setMyBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("User context:", user);
@@ -39,6 +40,22 @@ const MyBlogs = () => {
 
     fetchMyBlogs();
   }, [user]);
+
+  const handleDelete = async (blogId) => {
+    if (!user) return;
+
+    try {
+      await axios.delete(`http://localhost:3000/api/blogs/${blogId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setMyBlogs(myBlogs.filter((blog) => blog.blogId !== blogId));
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete the blog. Please try again.");
+    }
+  };
 
   if (loading) {
     return (
@@ -103,6 +120,11 @@ const MyBlogs = () => {
                     className="text-blue-400 font-semibold hover:underline">
                     Edit
                   </Link>
+                  <button
+                    onClick={() => handleDelete(blog.blogId)}
+                    className="text-red-400 font-semibold hover:underline">
+                    Delete
+                  </button>
                   <Link
                     to={`/blogs/${blog.blogId}`}
                     className="text-blue-400 font-semibold hover:underline">
@@ -121,3 +143,4 @@ const MyBlogs = () => {
 };
 
 export default MyBlogs;
+
