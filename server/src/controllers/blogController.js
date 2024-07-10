@@ -43,7 +43,7 @@ export const getHighlightedBlogs = async (req, res) => {
       orderBy: {
         likedByCount: "desc",
       },
-      take: 5, // Fetch top 5 highlighted blogs
+      take: 5,
     });
     res.json(blogs);
   } catch (error) {
@@ -78,13 +78,13 @@ export const getBlogById = async (req, res) => {
   try {
     const blog = await prisma.blog.findUnique({
       where: { blogId },
-      include: {},
     });
     res.json(blog);
   } catch (error) {
     res.status(400).json({ error: "Failed to fetch blog" });
   }
 };
+
 export const getMyBlogs = async (req, res) => {
   const { userId } = req.user;
 
@@ -99,6 +99,7 @@ export const getMyBlogs = async (req, res) => {
     res.status(400).json({ error: "Failed to fetch my blogs" });
   }
 };
+
 export const deleteMyBlog = async (req, res) => {
   const { userId } = req.user;
   const { blogId } = req.params;
@@ -109,7 +110,9 @@ export const deleteMyBlog = async (req, res) => {
     });
 
     if (blog.authorId !== userId) {
-      return res.status(403).json({ error: "You are not authorized to delete this blog" });
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this blog" });
     }
 
     await prisma.blog.delete({
@@ -121,3 +124,31 @@ export const deleteMyBlog = async (req, res) => {
     res.status(400).json({ error: "Failed to delete blog" });
   }
 };
+
+export const editMyBlog = async (req, res) => {
+  const { userId } = req.user;
+  const { blogId } = req.params;
+  const { title, content } = req.body;
+
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: { blogId },
+    });
+
+    if (blog.authorId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to edit this blog" });
+    }
+
+    const updatedBlog = await prisma.blog.update({
+      where: { blogId },
+      data: { title, content },
+    });
+
+    res.json(updatedBlog);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to update blog" });
+  }
+};
+

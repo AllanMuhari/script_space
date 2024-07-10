@@ -7,6 +7,7 @@ import {
   getBlogById,
   getMyBlogs,
   deleteMyBlog,
+  editMyBlog,
 } from "../controllers/blogController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -18,6 +19,6 @@ router.get("/", getBlogs);
 router.get("/:blogId", getBlogById);
 router.get("/highlighted", getHighlightedBlogs);
 router.post("/like/:blogId", authenticate, likeBlog);
-router.delete("/blog/:blogId", authenticate, deleteMyBlog);
-
+router.delete("/:blogId", authenticate, deleteMyBlog);
+router.put("/:blogId", authenticate, editMyBlog);
 export default router;
